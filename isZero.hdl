@@ -1,0 +1,27 @@
+CHIP isZero
+{
+    IN in[8];
+    OUT zero;
+
+PARTS:
+    And(a=in[0],b=true,out=bit1);
+    And(a=in[1],b=true,out=bit2);
+    And(a=in[2],b=true,out=bit3);
+    And(a=in[3],b=true,out=bit4);
+    And(a=in[4],b=true,out=bit5);
+    And(a=in[5],b=true,out=bit6);
+    And(a=in[6],b=true,out=bit7);
+    And(a=in[7],b=true,out=bit8);
+
+    HalfAdder(a=bit1,b=bit2,carry=catch,sum=r4a);
+    HalfAdder(a=bit3,b=bit4,sum=r4b);
+    HalfAdder(a=bit5,b=bit6,sum=r4c);
+    HalfAdder(a=bit7,b=bit8,sum=r4d);
+
+    HalfAdder(a=r4a,b=r4b,sum=f2a);
+    HalfAdder(a=r4c,b=r4d,sum=f2b);
+
+    HalfAdder(a=f2a,b=f2b,sum=out);
+    HalfAdder(a=catch,b=out,sum=caught);
+    Not(in=caught,out=zero);
+}
